@@ -1,0 +1,2 @@
+# big-data-wordcount
+A simplified starter project for Big Data Analytics/Big Data Science with Hadoop Yarn.  Integrated with Spring Boot and Spring for Hadoop to provide a unified configuration model and access to easy to use APIs for using HDFS, MapReduce, Pig, and Hive with built-in local deployment.  Yes, you heard right -- there is no need to have a Hadoop cluster running to test your code!  This project will spin up Hadoop on demand for you locally and then spin it back down after running your MapReduce code.

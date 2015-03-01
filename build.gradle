@@ -1,0 +1,64 @@
+buildscript {
+    repositories {
+        maven { url "http://repo.spring.io/libs-release" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.1.RELEASE")
+    }
+}
+
+allprojects {
+    apply plugin: 'base'
+}
+
+subprojects { subproject ->
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    apply plugin: 'idea'
+    version =  '0.1.0'
+    repositories {
+        mavenCentral()
+        maven { url "http://repo.spring.io/libs-release" }
+    }
+    dependencies {
+        compile("org.springframework.data:spring-yarn-boot:2.1.0.RELEASE")
+    }
+    task copyJars(type: Copy) {
+        from "$buildDir/libs"
+        into "$rootDir/wordcount-yarn-dist/target/wordcount-yarn-dist/"
+        include "**/*.jar"
+    }
+    assemble.doLast {copyJars.execute()}
+}
+
+project('wordcount-yarn-client') {
+    apply plugin: 'spring-boot'
+}
+
+project('wordcount-yarn-appmaster') {
+    apply plugin: 'spring-boot'
+}
+
+project('wordcount-yarn-container') {
+    apply plugin: 'spring-boot'
+}
+
+project('wordcount-yarn-dist') {
+    dependencies {
+        compile project(":wordcount-yarn-client")
+        compile project(":wordcount-yarn-appmaster")
+        compile project(":wordcount-yarn-container")
+        testCompile("org.springframework.data:spring-yarn-boot-test:2.1.0.RELEASE")
+        testCompile("org.hamcrest:hamcrest-core:1.2.1")
+        testCompile("org.hamcrest:hamcrest-library:1.2.1")
+    }
+    test.dependsOn(':wordcount-yarn-client:assemble')
+    test.dependsOn(':wordcount-yarn-appmaster:assemble')
+    test.dependsOn(':wordcount-yarn-container:assemble')
+    clean.doLast {ant.delete(dir: "target")}
+    jar.enabled = false
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.11'
+}

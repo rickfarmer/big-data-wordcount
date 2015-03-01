@@ -1,0 +1,1 @@
+include 'wordcount-yarn-client','wordcount-yarn-appmaster','wordcount-yarn-container','wordcount-yarn-dist'

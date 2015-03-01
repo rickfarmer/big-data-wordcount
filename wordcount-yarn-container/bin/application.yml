@@ -1,0 +1,17 @@
+spring:
+    hadoop:
+        fsUri: hdfs://localhost:8020
+        resourceManagerHost: localhost
+    yarn:
+        appName: wordcount-yarn
+        applicationDir: /app/wordcount-yarn/
+        client:
+            files:
+              - "file:wordcount-yarn-dist/target/wordcount-yarn-dist/wordcount-yarn-container-0.1.0.jar"
+              - "file:wordcount-yarn-dist/target/wordcount-yarn-dist/wordcount-yarn-appmaster-0.1.0.jar"
+            launchcontext:
+                archiveFile: wordcount-yarn-appmaster-0.1.0.jar
+        appmaster:
+            containerCount: 1
+            launchcontext:
+                archiveFile: wordcount-yarn-container-0.1.0.jar
